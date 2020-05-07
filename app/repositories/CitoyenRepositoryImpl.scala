@@ -22,7 +22,7 @@ class CitoyenRepositoryImpl @Inject()(implicit ec: ExecutionContext, reactiveMon
   override def save(citoyen: Citoyen)(implicit ec: ExecutionContext): Future[WriteResult] =
     collection.flatMap(_.insert(citoyen))
 
-  private def collection: Future[JSONCollection] = reactiveMongoApi.database.map(_.collection("dbVillages"))
+  private def collection: Future[JSONCollection] = reactiveMongoApi.database.map(_.collection("dbVillage"))
 
   override def update(matricule: String, citoyen: Citoyen)(implicit ec: ExecutionContext): Future[Option[Citoyen]] =
     collection.flatMap(_.findAndUpdate(BSONDocument("matricule" -> matricule), BSONDocument(

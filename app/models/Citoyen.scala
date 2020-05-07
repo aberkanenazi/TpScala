@@ -10,22 +10,22 @@ case class Citoyen(
                    matricule: String,
                    name: String,
                    gender: String,
-                   age: String,
+                   age: Int,
                    state: String,
                  ) {
 
-  def setState(state: String) = new Citoyen(_id,matricule, name, gender, age, state)
+  def setState(state: String) = new Citoyen(_id, matricule, name, gender, age, state)
 }
 
 object Citoyen {
 
   val citoyenWrites: Writes[Citoyen] = (
-      (JsPath \ "_id").writeNullable[BSONObjectID] and
-        (JsPath \ "matricule").write[String] and
+    (JsPath \ "_id").writeNullable[BSONObjectID] and
+      (JsPath \ "matricule").write[String] and
       (JsPath \ "name").write[String] and
       (JsPath \ "gender").write[String] and
-      (JsPath \ "age").write[String] and
-      (JsPath \ "state").write[String] and
+      (JsPath \ "age").write[Int] and
+      (JsPath \ "state").write[String]
     ) (unlift(Citoyen.unapply))
 
   implicit val citoyenReads: Reads[Citoyen] = (
@@ -33,8 +33,8 @@ object Citoyen {
       (JsPath \ "matricule").read[String] and
       (JsPath \ "name").read[String] and
       (JsPath \ "gender").read[String] and
-      (JsPath \ "age").read[String] and
-      (JsPath \ "state").read[String] and
+      (JsPath \ "age").read[Int] and
+      (JsPath \ "state").read[String]
     ) (Citoyen.apply _)
 
   implicit val citoyenFormat: Format[Citoyen] = Format(citoyenReads, citoyenWrites)
