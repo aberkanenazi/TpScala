@@ -1,0 +1,9 @@
+
+# Routes
+GET           /api/citoyens            controllers.CitoyenController.index
+GET           /api/citoyens/:id        controllers.CitoyenController.read(id: String)
+POST          /api/citoyens            controllers.CitoyenController.create
+PUT           /api/citoyens/:id        controllers.CitoyenController.update(id: String)
+DELETE        /api/citoyens/:id        controllers.CitoyenController.remove(id: String)
+
+      
