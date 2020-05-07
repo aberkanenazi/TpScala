@@ -27,4 +27,11 @@ class CitoyenEvent {
     val e = Event(command, citoyen.matricule, jsonPayload)
     return write(e)
   }
+
+  def createdCitoyenNoExistEvent(citoyen: Citoyen): String = {
+    implicit val formats = DefaultFormats
+    val payload = Map("matricule" -> citoyen.matricule, "name" -> citoyen.name, "gender" -> citoyen.gender, "age" -> citoyen.age.toString(), "state" -> citoyen.state)
+    val e = Event("Citoyen No Exist", citoyen.matricule, write(payload))
+    return write(e)
+  }
 }
