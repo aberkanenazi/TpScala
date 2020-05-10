@@ -16,8 +16,19 @@ case class Citoyen(
 
   def setState(state: String) = new Citoyen(_id, matricule, name, gender, age, state)
 }
-
 object Citoyen {
+  implicit val citoyenFormat: Format[Citoyen]= {
+    Json.format[Citoyen]
+  }
+  implicit val citoyenRead: Reads[Seq[Citoyen]]= Reads.seq(citoyenFormat)
+  implicit val citoyenOFormat = new OFormat[Citoyen] {
+    override def reads(json: JsValue): JsResult[Citoyen] = citoyenFormat.reads(json)
+
+    override def writes(o: Citoyen): JsObject = citoyenFormat.writes(o).asInstanceOf[JsObject]
+  }
+}
+
+/*object Citoyen {
 
   val citoyenWrites: Writes[Citoyen] = (
     (JsPath \ "_id").writeNullable[BSONObjectID] and
@@ -44,4 +55,4 @@ object Citoyen {
 
     override def writes(o: Citoyen): JsObject = citoyenFormat.writes(o).asInstanceOf[JsObject]
   }
-}
+}*/
