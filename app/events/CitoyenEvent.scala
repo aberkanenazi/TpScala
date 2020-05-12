@@ -13,7 +13,7 @@ class CitoyenEvent {
   def createdCitoyenEvent(citoyen: Citoyen): String = {
     implicit val formats = DefaultFormats
     val payload = Map("matricule" -> citoyen.matricule, "name" -> citoyen.name, "gender" -> citoyen.gender, "age" -> citoyen.age.toString(), "state" -> citoyen.state)
-    val e = Event("CreatedCitoyen", citoyen.matricule, write(payload))
+    val e = Event("Citoyen Create", citoyen.matricule, write(payload))
     return write(e)
   }
 

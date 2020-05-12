@@ -16,7 +16,7 @@ class UpdateNinjaCommand @Inject()(implicit ec: ExecutionContext, citoyenService
 
     citoyenServiceImpl.find(modifiedCitoyen.matricule).map {
       case Some(citoyen) => citoyenServiceImpl.update(modifiedCitoyen.matricule, modifiedCitoyen).map {
-        _ => KafkaProducerCitoyen.sendToKafka(citoyenEvent.updatedCitoyenEvent(modifiedCitoyen, citoyen, "UpdatedNinja"))
+        _ => KafkaProducerCitoyen.sendToKafka(citoyenEvent.updatedCitoyenEvent(modifiedCitoyen, citoyen, "Citoyen Upgrade Ninja"))
       }
       case _ => KafkaProducerCitoyen.sendToKafka(citoyenEvent.createdCitoyenNoExistEvent(modifiedCitoyen))
     }

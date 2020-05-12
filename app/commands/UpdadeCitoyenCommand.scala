@@ -12,10 +12,6 @@ class UpdadeCitoyenCommand @Inject()(implicit ec: ExecutionContext, citoyenServi
 
   override def execute(citoyen: Citoyen): Citoyen = {
 
-    //val c = citoyen.setState("citoyen")
-    //citoyenServiceImpl.save(c).map {
-      //_ => KafkaProducerCitoyen.sendToKafka(citoyenEvent.createdCitoyenEvent(c))
-    //}
     val c = citoyen.setState("citoyen")
     citoyenServiceImpl.find(citoyen.matricule).map {
       case Some(citoyen) => KafkaProducerCitoyen.sendToKafka(citoyenEvent.createdCitoyenAlreadyExistEvent(citoyen))
