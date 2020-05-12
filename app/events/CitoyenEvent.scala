@@ -13,7 +13,7 @@ class CitoyenEvent {
   def createdCitoyenEvent(citoyen: Citoyen): String = {
     implicit val formats = DefaultFormats
     val payload = Map("matricule" -> citoyen.matricule, "name" -> citoyen.name, "gender" -> citoyen.gender, "age" -> citoyen.age.toString(), "state" -> citoyen.state)
-    val e = Event("Citoyen Create", citoyen.matricule, write(payload))
+    val e = Event("Citoyen Created", citoyen.matricule, write(payload))
     return write(e)
   }
 
@@ -28,7 +28,7 @@ class CitoyenEvent {
     return write(e)
   }
 
-  def createdCitoyenNoExistEvent(citoyen: Citoyen): String = {
+  def updatedCitoyenNoExistEvent(citoyen: Citoyen): String = {
     implicit val formats = DefaultFormats
     val payload = Map("matricule" -> citoyen.matricule, "name" -> citoyen.name, "gender" -> citoyen.gender, "age" -> citoyen.age.toString(), "state" -> citoyen.state)
     val e = Event("Citoyen No Exist", citoyen.matricule, write(payload))
@@ -39,6 +39,13 @@ class CitoyenEvent {
     implicit val formats = DefaultFormats
     val payload = Map("matricule" -> citoyen.matricule, "name" -> citoyen.name, "gender" -> citoyen.gender, "age" -> citoyen.age.toString(), "state" -> citoyen.state)
     val e = Event("Citoyen Already Exist", citoyen.matricule, write(payload))
+    return write(e)
+  }
+
+  def updateStateNonAuthorized(citoyen :Citoyen) : String ={
+    implicit val formats = DefaultFormats
+    val payload = Map("matricule" -> citoyen.matricule, "name" -> citoyen.name, "gender" -> citoyen.gender, "age" -> citoyen.age.toString(), "state" -> citoyen.state)
+    val e = Event("Update Non Authorized", citoyen.matricule, write(payload))
     return write(e)
   }
 }

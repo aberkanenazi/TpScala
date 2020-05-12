@@ -1,6 +1,6 @@
 package controllers
 
-import commands.{UpdadeCitoyenCommand, UpdateNinjaCommand}
+import commands.{CitoyenCommandHandler}
 import javax.inject.Inject
 import models.Citoyen
 import play.api.libs.json._
@@ -9,7 +9,7 @@ import services.CitoyenServiceImpl
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CitoyenController @Inject()(implicit ec: ExecutionContext, cc: ControllerComponents, citoyenServiceImpl: CitoyenServiceImpl, updateNinja: UpdateNinjaCommand, updateCitoyen: UpdadeCitoyenCommand) extends AbstractController(cc) {
+class CitoyenController @Inject()(implicit ec: ExecutionContext, cc: ControllerComponents, citoyenServiceImpl: CitoyenServiceImpl, eventhandler: CitoyenCommandHandler) extends AbstractController(cc) {
 
   def index = Action.async {
     citoyenServiceImpl.findAll().map(citoyens => Ok(Json.toJson(citoyens)))
@@ -27,7 +27,7 @@ class CitoyenController @Inject()(implicit ec: ExecutionContext, cc: ControllerC
     _.body.validate[Citoyen]
       .map {
         citoyen =>
-          updateCitoyen.execute(citoyen)
+          eventhandler.insert(citoyen)
           Future.successful(Ok(Json.toJson(citoyen)))
       }.getOrElse(Future.successful(BadRequest("INVALID_FORMAT")))
   }
@@ -35,10 +35,7 @@ class CitoyenController @Inject()(implicit ec: ExecutionContext, cc: ControllerC
   def update(matricule: String) = Action.async(parse.json) {
     _.body.validate[Citoyen].map {
       citoyen =>
-        citoyen.state match {
-          case "ninja" => updateNinja.execute(citoyen)
-          //case "hokage" =>
-        }
+        eventhandler.update(citoyen)
         Future.successful(Ok(Json.toJson(citoyen)))
     }.getOrElse(Future.successful(BadRequest("INVALID_FORMAT")))
   }
