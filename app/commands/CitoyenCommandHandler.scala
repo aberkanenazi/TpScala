@@ -49,6 +49,16 @@ class CitoyenCommandHandler @Inject()(implicit ec: ExecutionContext, citoyenServ
           }else{
               KafkaProducerCitoyen.sendToKafka(citoyenEvent.updateStateNonAuthorized(modifiedCitoyen))
           }
+          case "genin"=> if(modifiedCitoyen.state.equals("chunin")) {
+            citoyenServiceImpl.update(modifiedCitoyen.matricule, modifiedCitoyen).map { _ => KafkaProducerCitoyen.sendToKafka(citoyenEvent.updatedCitoyenEvent(modifiedCitoyen, citoyen, "Citoyen Updated To Chunin"))}
+          }else{
+            KafkaProducerCitoyen.sendToKafka(citoyenEvent.updateStateNonAuthorized(modifiedCitoyen))
+          }
+          case "chunin"=> if(modifiedCitoyen.state.equals("hokage")) {
+            citoyenServiceImpl.update(modifiedCitoyen.matricule, modifiedCitoyen).map { _ => KafkaProducerCitoyen.sendToKafka(citoyenEvent.updatedCitoyenEvent(modifiedCitoyen, citoyen, "Citoyen Updated To Hokage"))}
+          }else{
+            KafkaProducerCitoyen.sendToKafka(citoyenEvent.updateStateNonAuthorized(modifiedCitoyen))
+          }
           case _=> KafkaProducerCitoyen.sendToKafka(citoyenEvent.updateStateNonAuthorized(modifiedCitoyen))
         }
       case _ => KafkaProducerCitoyen.sendToKafka(citoyenEvent.updatedCitoyenNoExistEvent(modifiedCitoyen))
