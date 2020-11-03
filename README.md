@@ -1,7 +1,6 @@
 # Tp scala Event sourcing CQRS 
 
-Une petite application mettant en place les bases de l'event sourcing . Ici nous changons l'etat d'un citoyen en utlisant l'event sourcing 
-Ainsi chaque action entraine le déclenchement d'un evenement qui sera ici simplement afficher dans une console 
+Une petite application mettant en place les bases de l'event sourcing . Ici nous changons l'état d'un citoyen en utlisant l'event sourcing. 
 
 ### Éléments utilisée
 
